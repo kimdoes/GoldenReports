@@ -11,8 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class JWTProvider {
@@ -25,23 +24,62 @@ public class JWTProvider {
         key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
     }
 
-    public String generateJWT(String userId, JWTType jwtType) {
-        Claims claims = Jwts.claims().add("userId", userId).build();
+    /**
+     *
+     * @param userId    유저 식별자
+     * @param expiration  유효시간 (단위: 초)
+     * @return JWT 토큰
+     */
+    public String generateJWT(String userId, int expiration) {
+        Claims claims = Jwts.claims().build();
+        expiration = expiration * 1000;
         Date now = new Date();
 
         return Jwts.builder()
                 .subject(userId)
                 .claims(claims)
                 .issuedAt(now)
-                .expiration(new Date(now.getTime() + jwtType.getValidTime()))
+                .expiration(new Date(now.getTime() + expiration))
                 .signWith(key)
                 .compact();
+    }
 
+    public String generateJWT(String userId,
+                              int expiration,
+                              Collection<Map<String, Object>> claimsContent) {
+        Map<String, Object> claims = new HashMap<>();
+
+        for (Map<String, Object> claim : claimsContent) {
+            claims.putAll(claim);
+        }
+
+        expiration = expiration * 1000;
+        Date now = new Date();
+
+        return Jwts.builder()
+                .subject(userId)
+                .claims(claims)
+                .issuedAt(now)
+                .expiration(new Date(now.getTime() + expiration))
+                .signWith(key)
+                .compact();
     }
 
     public Optional<String> decodeJWT(String jwt) {
-        String subject = Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt).getPayload().getSubject();
+        return Optional.ofNullable(Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt).getPayload().getSubject());
+    }
 
-        return Optional.ofNullable(subject);
+    public Optional<Map<String, Object>> decodeJWT(String jwt, List<String> keys) {
+        Map<String, Object> results = new HashMap<>();
+        Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt).getPayload();
+        results.put("subject", claims.getSubject());
+
+        for (String key : keys) {
+            if (claims.containsKey(key)) {
+                results.put(key, claims.get(key));
+            }
+        }
+
+        return Optional.of(results);
     }
 }

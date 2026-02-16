@@ -3,6 +3,7 @@ package com.example.GoldenReport.Controller;
 import com.example.GoldenReport.DTO.MovieSerchResultDTO.MovieSearchRequestDTO;
 import com.example.GoldenReport.DTO.MovieSerchResultDTO.MovieSearchResultDTO;
 import com.example.GoldenReport.Service.Movie.MovieSearchService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,9 @@ public class MovieSearchController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieSearchResultDTO> MovieSearch(
+    public ResponseEntity<?> MovieSearch(
+            HttpServletRequest request,
             @RequestBody MovieSearchRequestDTO movieSearchRequestDTO) {
-        return movieSearchService.SearchMovie(movieSearchRequestDTO);
+        return movieSearchService.SearchMovie(request, movieSearchRequestDTO);
     }
 }

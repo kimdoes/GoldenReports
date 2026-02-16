@@ -16,5 +16,7 @@ public class Member {
     @Id
     private String id;
 
+    private String username;
+
     private position position;
 }
