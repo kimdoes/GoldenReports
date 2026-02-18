@@ -1,4 +1,4 @@
-package com.example.GoldenReport.Service.LogInAndSignUp;
+package com.example.GoldenReport.FilterChain;
 
 import com.example.GoldenReport.DTO.HTTPResponseDTO.HTTPResponseDTO;
 import jakarta.servlet.ServletException;
@@ -10,7 +10,7 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-public class JWTAuthorizationEntryPoint implements AuthenticationEntryPoint {
+public class JwtAuthorizationEntryPoint implements AuthenticationEntryPoint {
 
     private final ObjectMapper mapper = new ObjectMapper();
 

@@ -1,4 +1,5 @@
-package com.example.GoldenReport.Config;
+/*
+package com.example.GoldenReport.dummy;
 
 import com.example.GoldenReport.Service.JWT.JWTProvider;
 import io.jsonwebtoken.JwtException;
@@ -19,7 +20,7 @@ import java.util.*;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
-    private final JWTProvider jwtProvider;
+    private final JWTProvider;
 
     public JWTAuthorizationFilter(JWTProvider JWTprovider) {
         this.jwtProvider = JWTprovider;
@@ -74,6 +75,8 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         }
     }
 }
+
+ */
 
 /*
 try {

@@ -69,7 +69,7 @@ class DemoApplicationTests {
                 principal, principal.getAuthorities(), "naver");
 
         oauth2SuccessHandler.onAuthenticationSuccess(request, response, auth);
-        Cookie authCookie = response.getCookie("Authentication");
+        Cookie authCookie = response.getCookie("Authentication_Signup");
 
         mockMvc.perform(post("/signup")
                 .cookie(authCookie)
@@ -84,8 +84,7 @@ class DemoApplicationTests {
         mockMvc.perform(post("/movie")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"query\":\"퀸스 갬빗\", \"page\": 1}"))
-                .andExpect(status().isFound())
-                .andExpect(redirectedUrl("/oauth2/authorization/naver"));
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
